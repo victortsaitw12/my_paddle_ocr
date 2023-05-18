@@ -87,8 +87,9 @@ Train:
       - SVTRRecAug:
           aug_type: 0 # or 1
       - CTCLabelEncode: # Class handling label
-      - LBPaug:
-          image_shape: [3, 64, 256]
+      # - LBPaug:
+      #     image_shape: [3, 64, 256]
+      - HOGaug:
       - SVTRRecResizeImg:
           image_shape: [3, 64, 256]
           padding: False
@@ -111,8 +112,9 @@ Eval:
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - LBPaug:
-          image_shape: [3, 64, 256]
+      # - LBPaug:
+      #     image_shape: [3, 64, 256]
+      - HOGaug:
       - SVTRRecResizeImg:
           image_shape: [3, 64, 256]
           padding: False

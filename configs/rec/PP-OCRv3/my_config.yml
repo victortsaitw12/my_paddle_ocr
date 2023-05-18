@@ -92,10 +92,6 @@ Loss:
   name: MyMultiLoss
   ignore_index: &ignore_index 5000 # Must be greater than the number of character classes
 
-PostProcess:
-  name: ABINetLabelDecode
-
-
 PostProcess:  
   name: ABINetLabelDecode
 
@@ -106,13 +102,13 @@ Metric:
 
 Train:
   dataset:
-    # name: SimpleDataSet
-    # data_dir: ./train_data/TC-STR
-    # label_file_list:
-    # - ./train_data/TC-STR/train_list.txt
-    name: LMDBDataSet
-    data_dir: ./train_data/TCSynth
-    ext_op_transform_idx: 1
+    name: SimpleDataSet
+    data_dir: ./train_data/TC-STR
+    label_file_list:
+    - ./train_data/TC-STR/train_list.txt
+    # name: LMDBDataSet
+    # data_dir: ./train_data/TCSynth
+    # ext_op_transform_idx: 1
     transforms:
       - DecodeImage: # load image
           img_mode: RGB
@@ -120,10 +116,10 @@ Train:
       - ABINetRecAug:
       - ABINetLabelEncode: # Class handling label
           ignore_index: *ignore_index
-      # - ABINetRecResizeImg:
-      #     image_shape: [3, 32, 128]
-      - LBPaug:
+      - ABINetRecResizeImg:
           image_shape: [3, 32, 128]
+      # - LBPaug:
+      #     image_shape: [3, 32, 128]
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
@@ -145,6 +141,8 @@ Eval:
           ignore_index: *ignore_index
       - ABINetRecResizeImg:
           image_shape: [3, 32, 128]
+      # - LBPaug:
+      #     image_shape: [3, 32, 128]
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:

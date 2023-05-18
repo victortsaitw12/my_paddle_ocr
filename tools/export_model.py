@@ -247,6 +247,11 @@ def main():
     arch_config = config["Architecture"]
 
     if arch_config["algorithm"] == "SVTR" and arch_config["Head"][
+            "name"] == 'MyHead':
+        input_shape = config["Eval"]["dataset"]["transforms"][-2][
+            'ABINetRecResizeImg']['image_shape']
+        print(input_shape)
+    elif arch_config["algorithm"] == "SVTR" and arch_config["Head"][
             "name"] != 'MultiHead':
         input_shape = config["Eval"]["dataset"]["transforms"][-2][
             'SVTRRecResizeImg']['image_shape']

@@ -19,9 +19,26 @@ class LBPaug(object):
             new_p = new_p.convert('RGB')
         new_p.save(name)
 
-
     def __call__(self, data):
         img = data['image']
+        # print('call LBP', type(img), img.shape)
+        # self.save(img, 'lbp_1.jpg')
+        resized_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        lbp = local_binary_pattern(resized_image, self.n_points, self.radius)
+
+        h, w = lbp.shape
+        color_img = np.zeros([h, w, 3])
+        color_img[:, :, 2] = lbp  # In opencv images are BGR
+        color_img = color_img * 255
+        color_img = color_img.astype(np.uint8)
+        # print('call LBP(2)', type(color_img), color_img.shape)
+        # self.save(color_img, 'lbp_2.jpg')
+        data['image'] = color_img
+        return data
+    
+    def __back_call__(self, data):
+        img = data['image']
+        print('call LBP')
      
         imgC, imgH, imgW = self.image_shape
 

@@ -41,6 +41,10 @@ class DecodeImage(object):
 
     def __call__(self, data):
         img = data['image']
+        # print('###################################')
+        # f = open('image_1.jpg', 'wb')
+        # f.write(img)
+        # f.close()
         if six.PY2:
             assert type(img) is str and len(
                 img) > 0, "invalid input 'img' in DecodeImage"

@@ -421,6 +421,7 @@ class SVTRNet(nn.Layer):
             prenorm=True,
             use_lenhead=False,
             **kwargs):
+        # print('in_channels:', in_channels)
         super().__init__()
         self.img_size = img_size
         self.embed_dim = embed_dim

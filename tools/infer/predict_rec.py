@@ -19,6 +19,7 @@ sys.path.append(__dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 import cv2
 import numpy as np

@@ -34,7 +34,10 @@ from .copy_paste import CopyPaste
 from .ColorJitter import ColorJitter
 from .operators import *
 from .label_ops import *
+
 from .lbp_aug import LBPaug
+from .hog_aug import HOGaug
+
 from .east_process import *
 from .sast_process import *
 from .pg_process import *

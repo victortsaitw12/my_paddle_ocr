@@ -3,4 +3,9 @@ python tools/train.py -c C:\Users\victor\OneDrive\桌面\react_practice\PaddleOC
 
 
 # SVTR
-python tools/train.py -c C:\Users\victor\OneDrive\桌面\react_practice\PaddleOCR\configs\rec\PP-OCRv3\my_svtr_config.yml
+python tools/train.py -c configs\rec\PP-OCRv3\my_svtr_config.yml
+python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch.yml
+
+#CRNN
+python tools/train.py -c configs\rec\PP-OCRv3\my_crnn.yml
+python tools/train.py -c configs\rec\PP-OCRv3\my_crnn.yml -o Global.checkpoints=output\rec\mv3_none_bilstm_ctc\latest

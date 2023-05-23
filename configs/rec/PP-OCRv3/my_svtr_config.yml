@@ -1,20 +1,20 @@
 Global:
   use_gpu: True
-  epoch_num: 20
+  epoch_num: 100
   log_smooth_window: 20
-  print_batch_step: 10
+  print_batch_step: 2000
   save_model_dir: ./output/my_model
-  save_epoch_step: 3
+  save_epoch_step: 2000
   # evaluation is run every 2000 iterations after the 0th iteration
-  eval_batch_step: [0, 5]
+  eval_batch_step: [0, 2000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
   save_inference_dir:
-  use_visualdl: False
+  use_visualdl: True
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path: ppocr/utils/cht_tra_characters_v2.txt
+  character_dict_path: ppocr/utils/dict/chinese_cht_dict.txt
   character_type: cht
   max_text_length: 25
   infer_mode: False
@@ -38,13 +38,13 @@ Optimizer:
 Architecture:
   model_type: rec
   algorithm: SVTR
-  Transform:
-    name: STN_ON
-    tps_inputsize: [32, 64]
-    tps_outputsize: [32, 100]
-    num_control_points: 20
-    tps_margins: [0.05,0.05]
-    stn_activation: none
+  # Transform:
+  #   name: STN_ON
+  #   tps_inputsize: [32, 64]
+  #   tps_outputsize: [32, 100]
+  #   num_control_points: 20
+  #   tps_margins: [0.05,0.05]
+  #   stn_activation: none
   Backbone:
     name: SVTRNet
     img_size: [32, 100]
@@ -76,10 +76,13 @@ Metric:
 
 Train:
   dataset:
-    name: SimpleDataSet
-    data_dir: ./train_data/TC-STR
-    label_file_list:
-    - ./train_data/TC-STR/train_list.txt
+    # name: SimpleDataSet
+    # data_dir: ../../experiment/datasets/TC-STR
+    # label_file_list:
+    # - ../../experiment/datasets/TC-STR/train_labels.txt
+    name: LMDBDataSet
+    data_dir: ../../experiment/datasets/TCSynth
+    ext_op_transform_idx: 1
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -88,40 +91,48 @@ Train:
           aug_type: 0 # or 1
       - CTCLabelEncode: # Class handling label
       # - LBPaug:
-      #     image_shape: [3, 64, 256]
+      #     image_shape: [3, 32, 100]
+          # image_shape: [3, 64, 256]
       - HOGaug:
-      - SVTRRecResizeImg:
-          image_shape: [3, 64, 256]
+          image_shape: [3, 32, 100]
+          # image_shape: [3, 64, 256]
+      # - SVTRRecResizeImg:
+          # image_shape: [3, 32, 100]
+          # image_shape: [3, 64, 256]
           padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: True
-    batch_size_per_card: 5
+    batch_size_per_card: 64
     drop_last: True
     num_workers: 8
 
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/TC-STR
+    data_dir: ../../experiment/datasets/TC-STR
     label_file_list:
-    - ./train_data/TC-STR/train_list.txt
+    - ../../experiment/datasets/TC-STR/test_labels.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
       # - LBPaug:
-      #     image_shape: [3, 64, 256]
+      #     image_shape: [3, 32, 100]
+          # image_shape: [3, 64, 256]
       - HOGaug:
-      - SVTRRecResizeImg:
-          image_shape: [3, 64, 256]
+          image_shape: [3, 32, 100]
+          # image_shape: [3, 64, 256]
+      # - SVTRRecResizeImg:
+          # image_shape: [3, 32, 100]
+          # image_shape: [3, 64, 256]
           padding: False
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 5
+    batch_size_per_card: 64
     num_workers: 2

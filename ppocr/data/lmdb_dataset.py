@@ -37,6 +37,14 @@ class LMDBDataSet(Dataset):
         self.lmdb_sets = self.load_hierarchical_lmdb_dataset(data_dir)
         logger.info("Initialize indexs of datasets:%s" % data_dir)
         self.data_idx_order_list = self.dataset_traversal()
+
+        self.data_idx_order_list = [[_, i] for _, i in self.data_idx_order_list if (i % 10) < 5]
+        limit = 0.01
+        data_limit = int(len(self.data_idx_order_list) * limit)
+        self.data_idx_order_list = np.asarray(self.data_idx_order_list[:data_limit])
+
+        print('Training Data Length:', len(self.data_idx_order_list))
+
         if self.do_shuffle:
             np.random.shuffle(self.data_idx_order_list)
         self.ops = create_operators(dataset_config['transforms'], global_config)

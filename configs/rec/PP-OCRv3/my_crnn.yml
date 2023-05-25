@@ -1,6 +1,6 @@
 Global:
   use_gpu: True
-  epoch_num: 50
+  epoch_num: 100
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: ./output/rec/mv3_none_bilstm_ctc/
@@ -34,7 +34,7 @@ Architecture:
   model_type: rec
   algorithm: CRNN
   Transform:
-  in_channels: 4
+  in_channels: 6
   Backbone:
     name: MobileNetV3
     scale: 0.5
@@ -61,18 +61,23 @@ Train:
   dataset:
     name: LMDBDataSet
     data_dir: ../../experiment/datasets/TCSynth
+    limit: 0.02
+    # name: SimpleDataSet
+    # data_dir: ../../experiment/datasets/TC-STR
+    # label_file_list:
+    # - ../../experiment/datasets/TC-STR/all_labels.txt
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - LBPaug:
+      - SSRaug:
           image_shape: [3, 32, 100]
           mode: 'append'
           output_channel: -1   
       - CTCLabelEncode: # Class handling label
       - RecResizeImg:
           image_shape: [3, 32, 100]
-      - LBPaug:
+      - SSRaug:
           image_shape: [3, 32, 100]
           mode: 'append'
           output_channel: -1
@@ -94,14 +99,14 @@ Eval:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
-      - LBPaug:
-          image_shape: [3, 32, 320]
+      - SSRaug:
+          image_shape: [3, 32, 100]
           mode: 'append'
           output_channel: -1          
       - CTCLabelEncode: # Class handling label
       - RecResizeImg:
           image_shape: [3, 32, 100]
-      - LBPaug:
+      - SSRaug:
           image_shape: [3, 32, 100]
           mode: 'append'
           output_channel: -1          

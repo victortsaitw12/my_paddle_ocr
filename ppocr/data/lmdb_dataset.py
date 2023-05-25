@@ -39,7 +39,7 @@ class LMDBDataSet(Dataset):
         self.data_idx_order_list = self.dataset_traversal()
 
         self.data_idx_order_list = [[_, i] for _, i in self.data_idx_order_list if (i % 10) < 5]
-        limit = 0.01
+        limit = float(dataset_config['limit'])
         data_limit = int(len(self.data_idx_order_list) * limit)
         self.data_idx_order_list = np.asarray(self.data_idx_order_list[:data_limit])
 
@@ -134,6 +134,8 @@ class LMDBDataSet(Dataset):
         if label is None:
             return None
         label = label.decode('utf-8')
+        if label == 'none':
+            return None
         img_key = 'image-%09d'.encode() % index
         imgbuf = txn.get(img_key)
         return imgbuf, label

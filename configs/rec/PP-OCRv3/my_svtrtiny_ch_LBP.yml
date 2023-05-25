@@ -1,6 +1,6 @@
 Global:
   use_gpu: true
-  epoch_num: 26
+  epoch_num: 30
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: ./output/rec/svtr_ch_all/
@@ -8,7 +8,7 @@ Global:
   eval_batch_step:
   - 0
   - 500
-  cal_metric_during_train: true
+  cal_metric_during_train: false
   pretrained_model: null
   checkpoints: null
   save_inference_dir: null
@@ -101,18 +101,10 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    # - SSRaug:
-    #     image_shape: [3, 32, 320]
-    #     mode: 'append'
-    #     output_channel: -1    
-    - RecConAug:
-        prob: 0.5
-        ext_data_num: 2
-        image_shape:
-        - 32
-        - 320
-        - 3
-    - RecAug: null
+    - LBPaug:
+        image_shape: [3, 32, 320]
+        mode: 'append'
+        output_channel: -1    
     - CTCLabelEncode: null
     - SVTRRecResizeImg:
         image_shape:
@@ -120,11 +112,10 @@ Train:
         - 32
         - 320
         padding: true
-    - AddOneDimaug:
-    # - SSRaug:
-    #     image_shape: [3, 32, 320]
-    #     mode: 'append'
-    #     output_channel: -1
+    - LBPaug:
+        image_shape: [3, 32, 320]
+        mode: 'append'
+        output_channel: -1
     - KeepKeys:
         keep_keys:
         - image
@@ -145,10 +136,10 @@ Eval:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    # - SSRaug:
-    #     image_shape: [3, 32, 320]
-    #     mode: 'append'
-    #     output_channel: -1  
+    - LBPaug:
+        image_shape: [3, 32, 320]
+        mode: 'append'
+        output_channel: -1  
     - CTCLabelEncode: null
     - SVTRRecResizeImg:
         image_shape:
@@ -156,11 +147,10 @@ Eval:
         - 32
         - 320
         padding: true
-    - AddOneDimaug:
-    # - SSRaug:
-    #     image_shape: [3, 32, 320]
-    #     mode: 'append'
-    #     output_channel: -1
+    - LBPaug:
+        image_shape: [3, 32, 320]
+        mode: 'append'
+        output_channel: -1
     - KeepKeys:
         keep_keys:
         - image

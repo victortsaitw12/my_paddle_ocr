@@ -37,6 +37,8 @@ from .label_ops import *
 
 from .lbp_aug import LBPaug
 from .hog_aug import HOGaug
+from .ssr_aug import SSRaug
+from .add_dim_aug import AddOneDimaug
 
 from .east_process import *
 from .sast_process import *

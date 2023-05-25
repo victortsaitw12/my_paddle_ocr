@@ -27,6 +27,7 @@ class HOGaug(object):
         _, imgH, imgW = self.image_shape
         resized_image = cv2.resize(
             img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        # resized_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         _, _hog_image = hog(resized_image, orientations=9, pixels_per_cell=[8,8],
                    cells_per_block=[2,2], visualize=True, channel_axis=-1)
         return _hog_image

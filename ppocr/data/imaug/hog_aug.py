@@ -6,6 +6,7 @@ from skimage.exposure import rescale_intensity
 import cv2
 import numpy as np
 from PIL import Image
+import lmdb
 
 __all__  = ['HOGaug']
 
@@ -14,7 +15,9 @@ class HOGaug(object):
         self.image_shape = image_shape
         self.mode = mode
         self.output_channel = output_channel
-
+        root = r'C:\Users\victor\Desktop\experiment\datasets\HOG_data'
+        self.env = lmdb.open(root, max_readers=32, readonly=True, lock=False, readahead=False, meminit=False)
+        
     def save(self, img, name):
         new_p = Image.fromarray(img)
         print(new_p.mode)
@@ -23,6 +26,16 @@ class HOGaug(object):
         new_p.save(name)
 
     def _hog(self, data):
+        if 'idx' in data:
+            index = data['idx']
+            img_key = 'image-%09d'.encode() % index
+            with self.env.begin(write=False) as txn:
+                imgbuf = txn.get(img_key)
+            if imgbuf:
+                img_bin = np.frombuffer(imgbuf)
+                img_bin = np.reshape(img_bin, (32, 320, 1))
+                return img_bin
+            print('not found:',index)
         img = data['image']
         _, imgH, imgW = self.image_shape
         resized_image = cv2.resize(

@@ -38,10 +38,11 @@ class LMDBDataSet(Dataset):
         logger.info("Initialize indexs of datasets:%s" % data_dir)
         self.data_idx_order_list = self.dataset_traversal()
 
-        self.data_idx_order_list = [[_, i] for _, i in self.data_idx_order_list if (i % 10) < 5]
         limit = float(dataset_config['limit'])
-        data_limit = int(len(self.data_idx_order_list) * limit)
-        self.data_idx_order_list = np.asarray(self.data_idx_order_list[:data_limit])
+        if limit != 1.0:
+            self.data_idx_order_list = [[_, i] for _, i in self.data_idx_order_list if (i % 10) < 5]
+            data_limit = int(len(self.data_idx_order_list) * limit)
+            self.data_idx_order_list = np.asarray(self.data_idx_order_list[:data_limit])
 
         print('Training Data Length:', len(self.data_idx_order_list))
 
@@ -149,7 +150,7 @@ class LMDBDataSet(Dataset):
         if sample_info is None:
             return self.__getitem__(np.random.randint(self.__len__()))
         img, label = sample_info
-        data = {'image': img, 'label': label}
+        data = {'image': img, 'label': label, 'idx': file_idx}
         data['ext_data'] = self.get_ext_data()
         outs = transform(data, self.ops)
         if outs is None:

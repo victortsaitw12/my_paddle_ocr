@@ -14,6 +14,8 @@ python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch_LBP.yml  -o Global.
 
 python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch_SSR.yml
 
+python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch_HOG.yml -o Global.checkpoints=output\rec\svtr_ch_all\latest
+
 
 python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch_finetue_NORMAL.yml
 python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch_finetue_HOG.yml
@@ -23,3 +25,7 @@ python tools/train.py -c configs\rec\PP-OCRv3\my_svtrtiny_ch_finetue_LBP.yml
 python tools/train.py -c configs\rec\PP-OCRv3\my_crnn.yml
 python tools/train.py -c configs\rec\PP-OCRv3\my_crnn.yml -o Global.checkpoints=output\rec\mv3_none_bilstm_ctc\latest
 
+python tools/train.py -c configs\rec\PP-OCRv3\my_crnn_en_NOAUG.yml
+python tools/train.py -c configs\rec\PP-OCRv3\my_crnn_en_LBP.yml
+python tools/train.py -c configs\rec\PP-OCRv3\my_crnn_en_SSR.yml
+python tools/train.py -c configs\rec\PP-OCRv3\my_crnn_en_HOG.yml
